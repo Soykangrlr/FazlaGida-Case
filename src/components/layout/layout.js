@@ -5,11 +5,11 @@ function Layout({children}) {
   return (
     <>
      <Header/>
-    <div className="container mx-auto mb-8 mt-8">
+    <div className="container 2xl:h-screen 2xl:-mb-10  mx-auto mb-10  mt-8">
      {
         children
     }
-  </div>
+   </div>
   
    <Footer/>
     </>

@@ -1,13 +1,24 @@
-import { Link} from "react-router-dom";
-function CountryCard({item}) {
-  console.log(item);
+
+import PropTypes from 'prop-types';
+function CountryCard({image,trackName}) {
+ 
   return (
-    <Link to={`profile/${item.artist.name}`}>
-    <div className="p-2 w-44 text-center">
-        <img className="  w-40 h-40 object-cover rounded-full" src={item.image[0]['#text']} alt="" />
-        <p className="mt-3 text-xs font-semibold">{item.name}</p>
+ 
+    <div className="p-2 w-44 text-center ">
+        <img data-testid="image" className="  w-40 h-40 object-cover rounded-full" src={image} alt="" />
+        <p data-testid="track" className="mt-3 text-xs font-semibold">{trackName}</p>
     </div>
-    </Link>
+   
   )
+}
+
+CountryCard.propTypes ={
+  image:PropTypes.string,
+  trackName:PropTypes.string
+}
+CountryCard.defaultProps={
+  image:'https://ia.tmgrup.com.tr/53498a/240/240/0/0/1020/1020?u=https://i.tmgrup.com.tr/724dinle/2022/09/26/1664197809249.jpg',
+
+  trackName:'Stand By Me'
 }
 export default CountryCard

@@ -1,27 +1,36 @@
 
-import { Link} from "react-router-dom";
+
+import PropTypes from 'prop-types';
+import {useSelector} from "react-redux"
 
 function ArtistCard({ item }) {
- 
+  const dark=useSelector(state=>state.dark.dark)
+
   return (
-    <Link  to={`profile/${item.name}`}>
-      <div class="flex gap-x-4 w-full p-3 mx-auto items-center bg-light-card-color text-white rounded-lg  max-w-sm hover:scale-105 hover:cursor-pointer  ">
-        <img class="object-cover w-[100px] h-full " src={item.image[1]['#text']} alt="" />
-        <div class="leading-normal w-full ">
-          <h5 className=" relative mb-2 text-yellow-50 p-2 after:content-[''] after:w-32 after:border-b-2 after:absolute after:left-0 after:bottom-0 after:border-black ">Artist</h5>
+  
+      <div className={`${dark?'bg-card-color':'bg-light-card-color'} flex transition duration-300 ease-in gap-x-4 w-full p-3 mx-auto items-center   text-white rounded-lg  max-w-sm hover:scale-105 hover:cursor-pointer`}>
+        <img data-testid='image' className="object-cover w-[100px] h-full " src={item.image[0]['#text']} alt="" />
+        <div className="leading-normal w-full ">
+          <h5 data-testid='header' className=" relative mb-2 text-yellow-50 p-2 after:content-[''] after:w-32 after:border-b-2 after:absolute after:left-0 after:bottom-0 after:border-black ">Artist</h5>
           <div className="flex items-center  justify-between">
             <div>
-              <h1 className="text-sm md:text-md font-bold">{item.name}</h1>
+              <h1 data-testid="name" className="text-sm md:text-md font-bold">{item.name}</h1>
             </div>
             <div className="text-xs flex flex-col gap-y-2 text-gray-800">
-              <p ><span className="text-orange-400">listeners:</span> {item.listeners}</p>
-              <p><span className="text-yellow-400">playcount:</span> {item.playcount}</p>
+              <p data-testid='listener' ><span className={`${dark?'text-orange-500':'text-blue-900'}`}>listeners:</span> {item.listeners}</p>
+              <p  data-testid='playCount'><span className={`${dark?'text-yellow-500':'text-green-900'}`}>playcount:</span> {item.playcount}</p>
             </div>
           </div>
         </div>
       </div>
-    </Link>
+  
 
   )
 }
 export default ArtistCard
+ArtistCard.propTypes ={
+  item:PropTypes.object
+}
+ArtistCard.defaultProps={
+  item:{name:'Kenya West',listeners:'12345',playcount:'154545', image:[{size: 'small', "#text": 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQCjHX_74dYS7EcYG2zCjKjzSSgMuulq08gBA&usqp=CAU'}]}
+}

@@ -7,10 +7,12 @@ import SliderTacks from "../components/slider/sliderTracks";
 import ArtistCard from "../components/topArtist/artistCard";
 import { handleScroll } from "../utils/handleScroll";
 import {useSelector} from "react-redux"
+import { Link} from "react-router-dom";
+import ErrorPage from "./errorPage";
 
 function Homepage() {
   const dark=useSelector(state=>state.dark.dark)
-
+// TopTrack , TopArtist, CountryTracks Alındı
     const topTracks = useQuery(
       ["topTracks"],fetchTopTracks
     );
@@ -22,9 +24,9 @@ function Homepage() {
     isFetchingNextPage,
     status,
   } = useInfiniteQuery(["topArtists"], fetchTopArtists, {
-     
+    //  Scroll indikce pageParam Artırıldı
       getNextPageParam: (lastPage, allPages) => {
-  
+        // Her defasın 50 tane dat geldiği için kalan 0 değilse Son sayfa Kontrolü yapıldı
        const morePages=lastPage.length%50===0
        if (!morePages) {
         return
@@ -38,7 +40,7 @@ console.log(countryTracks);
     return <Loading/>;
   }
   if (status === 'error'||topTracks.isError||countryTracks.isError) {
-    <p>Error: {error.message}</p>
+    return <ErrorPage errorMasage='Bağlantı Kurulamadı'/>
   }
 
 
@@ -49,7 +51,7 @@ console.log(countryTracks);
   return (
     <div >
       <div className="mb-4">
-      <h1 className={`${dark?'text-light-card-secondary-color':'text-light-primary-color'} font-bold`}>Top Tracks</h1>
+      <h1 className={`${dark?'text-card-secondary-color':'text-primary-color'} font-bold`}>Top Tracks</h1>
       <SliderTacks items={topTracks.data}/>
       </div>
      <div className="flex flex-col gap-y-10 md:flex-row gap-x-4 lg:gap-x-16">
@@ -63,7 +65,9 @@ console.log(countryTracks);
        {data.pages.map((group, i) => (
         <React.Fragment key={i}>
           {group.map(item => (
+          <Link  to={`profile/${item.name?item.name:""}`}>
            <ArtistCard item={item}/>
+           </Link>
           ))}
         </React.Fragment>
       ))}
@@ -82,9 +86,10 @@ console.log(countryTracks);
         <h1 className={`${dark?'text-white':'text-gray-700'} text-center  mt-2 mb-2 font-bold text-xl`}>Popular Tracks In Turkey</h1>
         <div className="grid grid-cols-1  xl:grid-cols-3  gap-y-10 overflow-hidden max-h-[410px] hover:overflow-y-scroll p-2">
            {countryTracks.data.map(item=>(
-            <div className={`${dark?'border-light-card-secondary-color text-white':'border-light-primary-color text-black'}  mx-auto border  hover:scale-105 p-2`}>
-            <CountryCard item={item}/>
-           
+            <div className={`${dark?' text-white':'border-primary-color text-black'} rounded-2xl  mx-auto  hover:scale-105 p-2 transition duration-300 ease-in`}>
+                 <Link  to={`profile/${item.artist.name?item.artist.name:""}`}>
+            <CountryCard artistName={item.artist.name} image={item.image[0]['#text']} trackName={item.name}/>
+            </Link>
             </div>
            ))}
       </div>

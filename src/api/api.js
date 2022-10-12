@@ -1,5 +1,5 @@
 import axios from "axios";
-
+// fetching işlemleri burada yapıldı
 export const fetchTopTracks=async()=>{
 
     const topTrack=await axios.get(`${process.env.REACT_APP_API_BASE}2.0/?method=chart.gettoptracks&api_key=${process.env.REACT_APP_API_KEY}&format=json&limit=20`)
